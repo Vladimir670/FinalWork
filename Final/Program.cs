@@ -1,60 +1,38 @@
-﻿string[] workArray = FillArray();
-string[] resultArray = GenerateNewArray(workArray);
-string firstArray = PrintArray(workArray);
-string secondArray = PrintArray(resultArray);
-Console.WriteLine(firstArray + " -> " + secondArray);
+﻿using System;
+using static System.Console;
 
-string[] FillArray()
-{
-    Console.WriteLine("Введите строки через пробел: ");
-    string? enterSymbols = Console.ReadLine();
-    if (enterSymbols == null) { enterSymbols = ""; };
-    char[] separators = new char[] { ',', ' ' };
-    string[] workArray = enterSymbols.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-    return workArray;
-}
+Clear();
 
-string PrintArray(string[] workArray)
-{
-    string stringArray = "[";
-    for (int i = 0; i < workArray.Length; i++)
-    {
-        if (i == workArray.Length - 1)
-        {
-            stringArray += $"\"{workArray[i]}\"";
-            break;
-        }
-        stringArray += ($"\"{workArray[i]}\", ");
-    }
-    stringArray += "]";
-    return stringArray;
-}
+string[] array = AskArray();
+string[] result = FindLessThan(array, 3);
+WriteLine($"[{string.Join(", ", array)}] -> [{string.Join(", ", result)}]");
 
-int CountStringSymbols(string[] workArray)
-{
-    int counter = 0;
-    foreach (string item in workArray)
-    {
-        if (item.Length <= 3)
-        {
-            counter++;
+string[] FindLessThan(string[] input, int n) {
+    string[] output = new string[CountLessThan(input, n)];
+
+    for(int i = 0, j = 0; i < input.Length; i++) {
+        if(input[i].Length <= n) {
+            output[j] = input[i];
+            j++;
         }
     }
-    return counter;
+
+    return output;
 }
 
-string[] GenerateNewArray(string[] workArray)
-{
-    int resultArrayLength = CountStringSymbols(workArray);
-    string[] resultArray = new string[resultArrayLength];
-    int i = 0;
-    foreach (string item in workArray)
-    {
-        if (item.Length <= 3)
-        {
-            resultArray[i] = item;
-            i++;
+int CountLessThan(string[] input, int n) {
+    int count = 0;
+
+    for(int i = 0; i < input.Length; i++) {
+        if(input[i].Length <= n) {
+            count++;
         }
     }
-    return resultArray;
+
+    return count;
+}
+
+string[] AskArray() {
+    Write("Введите значения через пробел: ");
+    return ReadLine().Split(" ");
 }
